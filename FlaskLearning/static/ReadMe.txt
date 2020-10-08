@@ -1,0 +1,1 @@
+static folder is used for storing static files like images, videos, files, etc

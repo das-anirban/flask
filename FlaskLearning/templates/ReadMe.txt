@@ -1,0 +1,1 @@
+All HTML files needs to be placed inside template folders. For larger projects, there can be more than one templates folder as well.

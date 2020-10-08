@@ -1,0 +1,20 @@
+
+<head>
+	<title>Welcome {{name|capitalize}}</title>
+</head>
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Welcome {{name}} to my new Flask Website</h1>
+<h2>Your name has the following characters as follows</h2>
+<p>
+	<ul>
+		{% for item in char %}
+		<li>{{item}}</li>
+		{% endfor %}
+	</ul>
+
+
+</p>
+<div><img src="{{ url_for('static',filename = 'Road.jpg') }}" class="img-fluid" alt="Road Image"></div>
+{% endblock %}

@@ -1,0 +1,49 @@
+<head>
+	<script>
+		// Example starter JavaScript for disabling form submissions if there are invalid fields
+		(function() {
+		  'use strict';
+		  window.addEventListener('load', function() {
+		    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+		    var forms = document.getElementsByClassName('needs-validation');
+		    // Loop over them and prevent submission
+		    var validation = Array.prototype.filter.call(forms, function(form) {
+		      form.addEventListener('submit', function(event) {
+		        if (form.checkValidity() === false) {
+		          event.preventDefault();
+		          event.stopPropagation();
+		        }
+		        form.classList.add('was-validated');
+		      }, false);
+		    });
+		  }, false);
+		})();
+</script>
+</head>
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Sign Up Here</h1>
+    <p class="lead">Please sign up by entering your first name and last name</p>
+    <form action="{{ url_for('thankyou') }}" class="needs-validation" novalidate>
+  		<div class="form-row">
+    		<div class="form-group col-md-6">
+    			<label for="firstname">First Name</label>
+      			<input type="text" id = "firstname" class="form-control" placeholder="First Name" name="firstname" required>
+    		</div>
+    		<div class="form-group col-md-6">
+    			<label for="lastname">Last Name</label>
+      			<input type="text" id="lastname" class="form-control" placeholder="Last Name" name="lastname" required>
+    		</div>
+    		<div class="form-group col-md">
+    			<button type="submit" class="btn btn-primary">Sign Up</button>
+    		</div>
+  		</div>
+	</form>
+  </div>
+</div>
+
+{% endblock %}

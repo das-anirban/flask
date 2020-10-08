@@ -1,0 +1,10 @@
+<h1>Welcome User Survey</h1>
+<form method = "POST">
+	{{ form.hidden_tag() }}
+	{{ form.name.label }}{{ form.name }} <br/>
+	{{ form.age.label }}{{ form.age }} <br/>
+	{{ form.mood.label }}{{ form.mood}} <br/>
+	{{ form.food.label }}{{ form.food }} <br/>
+	{{ form.feedback.label }}{{ form.feedback }} <br/>
+	{{ form.submit() }}
+</form>
