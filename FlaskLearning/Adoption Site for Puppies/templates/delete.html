@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% for mess in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{ mess }}
+</div>
+{% endfor %}
+<div class="jumbotron jumbotron-fluid">
+	<h1>Puppy got adopted. Delete a puppy from our database.</h1>
+	<form novalidate method="POST" class="needs-validation">
+		{{form.hidden_tag()}}
+		{{form.uid.label}}{{form.uid(class='form-control col-md-6', required=True)}}
+		{{form.submit()}}
+	</form>
+</div>
+{% endblock %}
