@@ -5,6 +5,8 @@ os.environ["OAUTHLIB_RELAX_TOKEN_SCOPE"] = '1'
 
 from flask import Flask, render_template, redirect, url_for
 from flask_dance.contrib.google import make_google_blueprint, google
+from flask_dance.consumer import oauth_authorized
+from flask_login import logout_user
 
 app = Flask(__name__)
 
@@ -23,20 +25,46 @@ def index():
 def welcome():
 	if not google.authorized:
 		return redirect(url_for('index'))
-
-	return render_template('welcome.html')
+	resp = google.get("/oauth2/v1/userinfo")
+	assert resp.ok, resp.text
+	email=resp.json()["email"]
+	name=resp.json()["name"]
+	#print(resp)
+	return render_template("welcome.html",email=name)
 
 @app.route('/login/google')
 def login():
+	#print (google.authorized)
 	if not google.authorized:
-		return render_template(url_for('google.login'))
+		return redirect_to(url_for('google.login'))
 
-	resp = google.get("/oauth2/v2/userinfo")
+	resp = google.get("/oauth2/v1/userinfo")
 	assert resp.ok, resp.text
-	print(resp)
-	email=resp.json()["email	"]
+	email=resp.json()["email"]
+	
+	return render_template("welcome.html",email=email)
 
-	return render_template('welcome.html', email=email)
+@oauth_authorized.connect
+def redirect_to_next_url(blueprint, token):
+	print(token)
+	blueprint.token = token
+	next_url = url_for('welcome')
+	return redirect(next_url)
+
+@app.route("/logout")
+def logout():
+	if google.authorized:
+	    token = blueprint.token["access_token"]
+	    resp = google.post(
+	        "https://accounts.google.com/o/oauth2/revoke",
+	        params={"token": token},
+	        headers={"Content-Type": "application/x-www-form-urlencoded"}
+	    )
+	    assert resp.ok, resp.text
+	    #logout_user()        # Delete Flask-Login's session cookie
+	    del blueprint.token  # Delete OAuth token from storage
+	    return redirect(url_for('index'))
+	return redirect(url_for('index'))
 
 if __name__ == '__main__':
 	app.run(debug=True)
