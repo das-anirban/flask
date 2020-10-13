@@ -3,7 +3,7 @@ import os
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = '1'
 os.environ["OAUTHLIB_RELAX_TOKEN_SCOPE"] = '1'
 
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, jsonify
 from flask_dance.contrib.google import make_google_blueprint, google
 from flask_dance.consumer import oauth_authorized
 from flask_login import logout_user
@@ -31,6 +31,12 @@ def welcome():
 	name=resp.json()["name"]
 	#print(resp)
 	return render_template("welcome.html",email=name)
+
+@app.route('/data')
+def login_data():
+	resp = google.get("/oauth2/v1/userinfo")
+	assert resp.ok, resp.text
+	return resp.text
 
 @app.route('/login/google')
 def login():
